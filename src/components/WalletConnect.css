@@ -1,0 +1,32 @@
+.wallet-connect-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.network-indicator {
+  padding: 6px 16px;
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 204, 102, 0.2) 100%);
+  border: 1px solid rgba(0, 255, 136, 0.4);
+  border-radius: 20px;
+  color: #00ff88;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+  animation: glow-pulse 2s ease-in-out infinite;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.5);
+  }
+}
