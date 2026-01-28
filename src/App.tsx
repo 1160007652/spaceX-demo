@@ -6,6 +6,7 @@ import { WalletConnect } from './components/WalletConnect';
 import { PaymentPanel } from './components/PaymentPanel';
 import { SpaceScene } from './components/SpaceScene';
 import { SuccessMessage } from './components/SuccessMessage';
+import { TravelersList } from './components/TravelersList';
 import { SOLANA_NETWORK } from './config/solana';
 import './App.css';
 
@@ -30,6 +31,7 @@ function App() {
             <PaymentPanel />
             <SpaceScene />
             <SuccessMessage />
+            <TravelersList />
           </div>
         </WalletModalProvider>
       </WalletProvider>

@@ -222,3 +222,44 @@
     box-shadow: 0 0 25px rgba(0, 255, 136, 0.5);
   }
 }
+
+.input-group {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #aaccff;
+  font-weight: 500;
+}
+
+.name-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid rgba(170, 204, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(10, 14, 39, 0.8);
+  color: #ffffff;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.name-input:focus {
+  outline: none;
+  border-color: #4ecdc4;
+  box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+}
+
+.name-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.name-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}

@@ -1,18 +1,21 @@
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
-import { PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { PAYMENT_AMOUNT, RECIPIENT_ADDRESS } from '../config/solana';
 import { StarfieldBackground } from './StarfieldBackground';
+import { buyTicket } from '../utils/program';
 import './PaymentPanel.css';
 
 export const PaymentPanel = () => {
-  const { publicKey, sendTransaction } = useWallet();
+  const wallet = useWallet();
+  const { publicKey } = wallet;
   const { connection } = useConnection();
   const { isPaid, setPaid, setLaunching } = useStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
+  const [userName, setUserName] = useState('');
 
   // 获取余额
   useEffect(() => {
@@ -36,12 +39,24 @@ export const PaymentPanel = () => {
       return;
     }
 
+    if (!userName.trim()) {
+      setError('请输入你的名称');
+      return;
+    }
+
+    if (userName.length > 32) {
+      setError('名称太长，最多32个字符');
+      return;
+    }
+
     setLoading(true);
     setError(null);
+    let success = false;
 
     try {
-      console.log('=== 开始转账 ===');
-      console.log('发送方:', publicKey.toBase58());
+      console.log('=== 开始购买船票 ===');
+      console.log('旅行者:', userName);
+      console.log('钱包:', publicKey.toBase58());
       console.log('接收方:', RECIPIENT_ADDRESS);
       console.log('金额:', PAYMENT_AMOUNT, 'SOL');
       console.log('网络: Devnet');
@@ -54,46 +69,38 @@ export const PaymentPanel = () => {
         throw new Error('余额不足！请访问 https://faucet.solana.com/ 获取 Devnet 测试币');
       }
       
-      // 创建转账交易
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: publicKey,
-          toPubkey: new PublicKey(RECIPIENT_ADDRESS),
-          lamports: PAYMENT_AMOUNT * LAMPORTS_PER_SOL,
-        })
-      );
-
-      console.log('发送交易...');
+      console.log('调用智能合约...');
       
-      // 发送交易
-      const signature = await sendTransaction(transaction, connection);
+      // 通过智能合约购买船票
+      const signature = await buyTicket(
+        connection,
+        wallet,
+        userName.trim(),
+        PAYMENT_AMOUNT,
+        new PublicKey(RECIPIENT_ADDRESS)
+      );
+      
       console.log('✅ 交易已发送!');
       console.log('签名:', signature);
       console.log('🔗 查看: https://explorer.solana.com/tx/' + signature + '?cluster=devnet');
       
-      // 等待确认
-      console.log('等待确认...');
-      const latestBlockhash = await connection.getLatestBlockhash();
-      await connection.confirmTransaction({
-        signature,
-        blockhash: latestBlockhash.blockhash,
-        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-      });
+      console.log('✅ 船票购买成功!');
+      console.log('=== 欢迎登船 ===');
       
-      console.log('✅ 交易已确认!');
-      console.log('=== 转账成功 ===');
+      // 标记成功
+      success = true;
       
       // 成功后启动火箭
       setPaid(true);
       setTimeout(() => setLaunching(true), 1000);
       
     } catch (err: any) {
-      console.error('=== 支付失败 ===');
+      console.error('=== 购票失败 ===');
       console.error('错误对象:', err);
       console.error('错误类型:', err?.constructor?.name);
       console.error('错误消息:', err?.message);
       
-      let errorMsg = '支付失败';
+      let errorMsg = '购票失败';
       
       if (err?.message?.includes('User rejected') || err?.message?.includes('User declined')) {
         errorMsg = '❌ 用户取消了交易';
@@ -101,13 +108,18 @@ export const PaymentPanel = () => {
         errorMsg = '❌ 余额不足！\n请访问 https://faucet.solana.com/ 获取 Devnet 测试币';
       } else if (err?.message?.includes('Unexpected error')) {
         errorMsg = '❌ 网络错误！\n\n请检查：\n1. Phantom 钱包是否切换到 Devnet\n2. 刷新页面重试';
+      } else if (err?.message?.includes('already in use')) {
+        errorMsg = '❌ 你已经购买过船票了！';
       } else if (err?.message) {
         errorMsg = '❌ ' + err.message;
       }
       
       setError(errorMsg);
     } finally {
-      setLoading(false);
+      // 只有在失败时才重置 loading 状态
+      if (!success) {
+        setLoading(false);
+      }
     }
   };
 
@@ -145,10 +157,23 @@ export const PaymentPanel = () => {
           <p className="warning">请先连接 Solana 钱包</p>
         ) : (
           <>
+            <div className="input-group">
+              <label htmlFor="userName">👤 旅行者名称</label>
+              <input
+                id="userName"
+                type="text"
+                placeholder="输入你的名称（将显示在星际中）"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                maxLength={32}
+                disabled={loading}
+                className="name-input"
+              />
+            </div>
             <button 
               className="launch-button"
               onClick={handlePayment}
-              disabled={loading}
+              disabled={loading || !userName.trim()}
             >
               {loading ? '处理中...' : '🎫 购买船票并发射'}
             </button>
