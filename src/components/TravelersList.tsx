@@ -11,8 +11,6 @@ export const TravelersList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!wallet.publicKey) return;
-
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -40,9 +38,7 @@ export const TravelersList = () => {
     // 每30秒刷新一次
     const interval = setInterval(fetchData, 30000);
     return () => clearInterval(interval);
-  }, [wallet.publicKey, connection]);
-
-  if (!wallet.publicKey) return null;
+  }, [connection, wallet]);
 
   return (
     <div className="travelers-list-container">
