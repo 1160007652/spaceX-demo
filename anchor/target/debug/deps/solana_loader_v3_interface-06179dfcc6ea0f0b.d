@@ -1,9 +1,0 @@
-/Users/mashuangshuang/solana-projects/lucky/anchor/target/debug/deps/solana_loader_v3_interface-06179dfcc6ea0f0b.d: /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/lib.rs /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/instruction.rs /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/state.rs
-
-/Users/mashuangshuang/solana-projects/lucky/anchor/target/debug/deps/libsolana_loader_v3_interface-06179dfcc6ea0f0b.rlib: /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/lib.rs /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/instruction.rs /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/state.rs
-
-/Users/mashuangshuang/solana-projects/lucky/anchor/target/debug/deps/libsolana_loader_v3_interface-06179dfcc6ea0f0b.rmeta: /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/lib.rs /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/instruction.rs /Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/state.rs
-
-/Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/lib.rs:
-/Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/instruction.rs:
-/Users/mashuangshuang/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/solana-loader-v3-interface-3.0.0/src/state.rs:
