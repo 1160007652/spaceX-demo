@@ -33,9 +33,11 @@ export const ColorfulStars = ({ count = 3000 }: { count?: number }) => {
 
       // 随机颜色
       const color = starColors[Math.floor(Math.random() * starColors.length)];
-      colors[i * 3] = color.r;
-      colors[i * 3 + 1] = color.g;
-      colors[i * 3 + 2] = color.b;
+      if (color) {
+        colors[i * 3] = color.r;
+        colors[i * 3 + 1] = color.g;
+        colors[i * 3 + 2] = color.b;
+      }
 
       // 随机大小
       sizes[i] = Math.random() * 2 + 0.5;
@@ -53,10 +55,12 @@ export const ColorfulStars = ({ count = 3000 }: { count?: number }) => {
     
     // 闪烁效果
     const sizes = starsRef.current.geometry.attributes['size'];
-    if (sizes) {
+    if (sizes && sizes.array) {
       for (let i = 0; i < count; i++) {
         const originalSize = (sizes.array as Float32Array)[i];
-        (sizes.array as Float32Array)[i] = originalSize + Math.sin(time * 2 + i) * 0.3;
+        if (originalSize !== undefined) {
+          (sizes.array as Float32Array)[i] = originalSize + Math.sin(time * 2 + i) * 0.3;
+        }
       }
       sizes.needsUpdate = true;
     }
@@ -70,18 +74,21 @@ export const ColorfulStars = ({ count = 3000 }: { count?: number }) => {
           count={count}
           array={positions}
           itemSize={3}
+          args={[positions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
           count={count}
           array={colors}
           itemSize={3}
+          args={[colors, 3]}
         />
         <bufferAttribute
           attach="attributes-size"
           count={count}
           array={sizes}
           itemSize={1}
+          args={[sizes, 1]}
         />
       </bufferGeometry>
       <pointsMaterial

@@ -76,12 +76,13 @@ export const StarfieldBackground = () => {
 
     // 初始化星星
     for (let i = 0; i < starCount; i++) {
+      const color = colors[Math.floor(Math.random() * colors.length)] || '#ffffff';
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         z: Math.random() * 1000,
         size: Math.random() * 2 + 0.5,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        color: color,
         speed: Math.random() * 0.5 + 0.2,
       });
     }
@@ -97,15 +98,17 @@ export const StarfieldBackground = () => {
 
     for (let i = 0; i < 3; i++) {
       const colorSet = planetColors[i % planetColors.length];
-      planets.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 40 + 30,
-        color: colorSet.main,
-        ringColor: Math.random() > 0.5 ? colorSet.ring : undefined,
-        speed: Math.random() * 0.1 + 0.05,
-        angle: Math.random() * Math.PI * 2,
-      });
+      if (colorSet) {
+        planets.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 40 + 30,
+          color: colorSet.main,
+          ringColor: Math.random() > 0.5 ? colorSet.ring : undefined,
+          speed: Math.random() * 0.1 + 0.05,
+          angle: Math.random() * Math.PI * 2,
+        });
+      }
     }
 
     // 初始化 UFO

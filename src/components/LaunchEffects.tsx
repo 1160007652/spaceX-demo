@@ -26,15 +26,34 @@ export const LaunchEffects = () => {
     if (!isLaunching || !particlesRef.current) return;
 
     const positions = particlesRef.current.geometry.attributes['position'];
-    if (!positions) return;
+    if (!positions || !positions.array) return;
+    
+    const posArray = positions.array as Float32Array;
     
     for (let i = 0; i < particleCount; i++) {
-      positions.array[i * 3] += velocities[i * 3];
-      positions.array[i * 3 + 1] += velocities[i * 3 + 1];
-      positions.array[i * 3 + 2] += velocities[i * 3 + 2];
+      const idx = i * 3;
+      const idx1 = idx + 1;
+      const idx2 = idx + 2;
+      
+      const posX = posArray[idx];
+      const posY = posArray[idx1];
+      const posZ = posArray[idx2];
+      const velX = velocities[idx];
+      const velY = velocities[idx1];
+      const velZ = velocities[idx2];
+      
+      if (posX !== undefined && velX !== undefined) {
+        posArray[idx] = posX + velX;
+      }
+      if (posY !== undefined && velY !== undefined) {
+        posArray[idx1] = posY + velY;
+      }
+      if (posZ !== undefined && velZ !== undefined) {
+        posArray[idx2] = posZ + velZ;
+      }
 
-      if (positions.array[i * 3 + 1] < -10) {
-        positions.array[i * 3 + 1] = 0;
+      if (posArray[idx1] !== undefined && posArray[idx1] < -10) {
+        posArray[idx1] = 0;
       }
     }
     positions.needsUpdate = true;
@@ -69,6 +88,7 @@ export const LaunchEffects = () => {
             count={particleCount}
             array={positions}
             itemSize={3}
+            args={[positions, 3]}
           />
         </bufferGeometry>
         <pointsMaterial
